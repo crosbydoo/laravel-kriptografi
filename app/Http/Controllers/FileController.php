@@ -6,8 +6,9 @@ use Dompdf\Dompdf;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
-use Illuminate\Support\Facades\Crypt as AES;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Crypt as AES;
 
 class FileController extends Controller
 {
@@ -15,6 +16,10 @@ class FileController extends Controller
     public function index()
     {
         $indexes = File::all(); // Ganti 'Index' dengan model yang sesuai
+
+        if (session(key: "success_message")) {
+        }
+        Alert::success('Success', session(key: "success_message"));
 
         return view('encrypt.index', compact('indexes'));
     }
@@ -69,6 +74,7 @@ class FileController extends Controller
         $upload_file->file_path = Storage::disk('public')->url($newPdfFilePath); // Simpan URL file di dalam kolom "file_path"
         $upload_file->save();
 
-        return redirect()->back()->with('success', 'File submitted');
+
+        return redirect()->back()->with('success_messsage', "File submitted");
     }
 }

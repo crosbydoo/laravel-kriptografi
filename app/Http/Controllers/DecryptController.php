@@ -7,6 +7,7 @@ use App\Models\Decrypt;
 use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Crypt as AES;
 
 class DecryptController extends Controller
@@ -15,6 +16,10 @@ class DecryptController extends Controller
     public function index()
     {
         $indexes = Decrypt::all(); // Ganti 'Index' dengan model yang sesuai
+        if (session(key: "success_message")) {
+        }
+        Alert::success('Success', session(key: "success_message"));
+
 
         return view('decrypt.index', compact('indexes'));
     }

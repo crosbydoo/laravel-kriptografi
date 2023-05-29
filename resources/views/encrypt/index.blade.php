@@ -30,4 +30,9 @@
             </div>
         </div>
     </div>
+    @if (session()->has('success_message'))
+        <script>
+            swal("Success", "{{ session('success_message') }}", "success");
+        </script>
+    @endif
 </x-app-layout>
