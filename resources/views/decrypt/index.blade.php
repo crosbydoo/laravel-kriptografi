@@ -14,20 +14,31 @@
 
                     <form method="POST" action="{{ route('decrypt.store') }}" enctype="multipart/form-data">
                         @csrf
-
                         <div class="mb-4">
                             <label for="pdf" class="block text-gray-700 font-bold mb-2">Select PDF File</label>
                             <input type="file" id="pdf" name="file" accept=".pdf"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            @error('file')
+                                <p class="text-red-500">{{ $message }}</p>
+                            @enderror
                         </div>
-
                         <button type="submit"
                             class="bg-cyan-600 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                             {{ __('Upload') }}
                         </button>
                     </form>
                 </div>
+                @if (session('success_message'))
+                    <script>
+                        swal("Success", "{{ session('success_message') }}", "success");
+                    </script>
+                @endif
             </div>
         </div>
     </div>
+    @if (session()->has('success_message'))
+        <script>
+            swal("Success", "{{ session('success_message') }}", "success");
+        </script>
+    @endif
 </x-app-layout>

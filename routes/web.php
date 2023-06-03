@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\File;
+use App\Models\Decrypt;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\DecryptController;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +24,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $encryptCount = File::count();
+    $decryptCount = Decrypt::count();
+    $userCount = User::count();
+
+    return view('dashboard', compact('encryptCount', 'decryptCount', 'userCount'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

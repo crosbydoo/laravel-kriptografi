@@ -16,11 +16,6 @@ class FileController extends Controller
     public function index()
     {
         $indexes = File::all(); // Ganti 'Index' dengan model yang sesuai
-
-        if (session(key: "success_message")) {
-        }
-        Alert::success('Success', session(key: "success_message"));
-
         return view('encrypt.index', compact('indexes'));
     }
 
@@ -28,12 +23,14 @@ class FileController extends Controller
 
     public function store(Request $request)
     {
-        $file = $request->file;
-
         $request->validate([
             'file' => 'required|mimes:pdf',
+        ], [
+            'file.required' => 'The file field is required.',
+            'file.mimes' => 'Only PDF files are allowed.',
         ]);
 
+        $file = $request->file;
         // Gunakan pdf parser untuk membaca konten dari file pdf
         $fileName = $file->getClientOriginalName();
 
@@ -73,6 +70,7 @@ class FileController extends Controller
         $upload_file->content = $encryptedContent;
         $upload_file->file_path = Storage::disk('public')->url($newPdfFilePath); // Simpan URL file di dalam kolom "file_path"
         $upload_file->save();
+        Alert::success('Success', session(key: "success_message"));
 
 
         return redirect()->back()->with('success_messsage', "File submitted");

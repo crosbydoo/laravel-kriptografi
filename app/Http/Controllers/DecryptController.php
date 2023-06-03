@@ -16,11 +16,6 @@ class DecryptController extends Controller
     public function index()
     {
         $indexes = Decrypt::all(); // Ganti 'Index' dengan model yang sesuai
-        if (session(key: "success_message")) {
-        }
-        Alert::success('Success', session(key: "success_message"));
-
-
         return view('decrypt.index', compact('indexes'));
     }
 
@@ -71,6 +66,7 @@ class DecryptController extends Controller
         $upload_file->content = $encryptedContent;
         $upload_file->file_path = Storage::disk('public')->url($newPdfFilePath); // Simpan URL file di dalam kolom "file_path"
         $upload_file->save();
+        Alert::success('Success', session(key: "success_message"));
 
         return redirect()->back()->with('success', 'File submitted');
     }
